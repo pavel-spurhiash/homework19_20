@@ -47,11 +47,7 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
             List<Item> items = new ArrayList<>();
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
-                    Item item = new Item();
-                    item.setId(resultSet.getLong("id"));
-                    item.setName(resultSet.getString("name"));
-                    item.setStatus(resultSet.getString("status"));
-                    items.add(item);
+                    items.add(createItem(resultSet));
                 }
                 return items;
             }
@@ -67,11 +63,7 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 List<Item> items = new ArrayList<>();
                 while (resultSet.next()) {
-                    Item item = new Item();
-                    item.setId(resultSet.getLong("id"));
-                    item.setName(resultSet.getString("name"));
-                    item.setStatus(resultSet.getString("status"));
-                    items.add(item);
+                    items.add(createItem(resultSet));
                 }
                 return items;
             }
@@ -105,6 +97,14 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Item> implements I
                 throw new SQLException("delete item failed, no rows affected.");
             }
         }
+    }
+
+    private Item createItem(ResultSet resultSet) throws SQLException{
+        Item item = new Item();
+        item.setId(resultSet.getLong("id"));
+        item.setName(resultSet.getString("name"));
+        item.setStatus(resultSet.getString("status"));
+        return item;
     }
 
 }
